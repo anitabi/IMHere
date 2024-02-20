@@ -76,7 +76,7 @@ function App() {
       document.fonts.add(loadedFont);
       console.log('Font loaded');
     }).catch(error => console.log('Font loading error:', error));
-  }, []); // 空依赖数组表示这个effect仅在组件挂载时运行一次
+  }, []);
 
 
   useEffect(() => {
@@ -127,10 +127,8 @@ function App() {
         // set merged image url
         setMergedImageURL(canvas.toDataURL('image/png'));
       };
-      // 设置secondImg.src在firstImg.onload内部，但要在secondImg.onload之后
       secondImg.src = URL.createObjectURL(secondImage);
     };
-    // 确保firstImg.onload定义完成后设置firstImg的src
     firstImg.src = URL.createObjectURL(firstImage);
   }, [p2Para, firstImage, secondImage]);
 
@@ -149,12 +147,36 @@ function App() {
         <div>
           <div className="row mb-3">
             <div className="col-md-5">
-              <input class="form-control" type="file" onChange={handleFirstImageChange} />
+              <button
+                className={`btn ${!secondImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
+                onClick={() => document.getElementById('fileInput').click()}
+                disabled={secondImage}>
+                上传截图
+              </button>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: 'none' }}
+                onChange={handleFirstImageChange}
+              />
+            </div>
 
-            </div>
             <div className="col-md-5">
-              <input class="form-control" type="file" onChange={handleSecondImageChange} disabled={!firstImage} />
+              <button
+                className={`btn ${firstImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
+                onClick={() => firstImage && document.getElementById('secondFileInput').click()}
+                disabled={!firstImage}>
+                上传实景
+              </button>
+              <input
+                type="file"
+                id="secondFileInput"
+                style={{ display: 'none' }}
+                onChange={handleSecondImageChange}
+                disabled={!firstImage}
+              />
             </div>
+
 
           </div>
           <div className="row">
