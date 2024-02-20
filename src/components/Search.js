@@ -90,7 +90,7 @@ function Search({ updatePosInfo }) {
                         value={keyword}
                         onChange={handleChange}
                         onKeyDown={handleKeyDown}
-                        placeholder="输入作品名"
+                        placeholder="输入作品名以检索数据库"
                     /></div>
             </div>
             <div>{noResult && (<p>无结果。</p>)}</div>
