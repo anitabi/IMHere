@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState, useRef, useEffect, handleChange } from 'react';
 
-// function to add text
+// function to add text aligned to left
 function addTextToCanvasL(canvas, text, x, y, size, color) {
   const ctx = canvas.getContext('2d');
   ctx.font = `${size}px LXGWWenKai`;
@@ -11,6 +11,7 @@ function addTextToCanvasL(canvas, text, x, y, size, color) {
   ctx.fillText(text, x, y);
 }
 
+// function to add text aligned to right
 function addTextToCanvasR(canvas, text, x, y, size, color) {
   const ctx = canvas.getContext('2d');
   ctx.font = `${size}px LXGWWenKai`;
@@ -80,7 +81,7 @@ function App() {
   };
 
 
-
+  // load font
   useEffect(() => {
     const font = new FontFace('LXGWWenKai', 'url(./LXGWWenKai.ttf)');
     font.load().then((loadedFont) => {
@@ -148,7 +149,7 @@ function App() {
       <div className="container">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
           <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <span class="fs-4">I'm Here!</span>
+            <span class="fs-4">I'm Here! 圣地巡礼对比图生成器</span>
           </a>
           {/* <ul class="nav nav-pills">
             <li><button className="btn">About</button></li>
@@ -192,10 +193,10 @@ function App() {
             <div>
               {fontLoaded ? (
                 <div>
-                  <p style={{ fontFamily: 'LXGWWenKai' }}>Font loaded.</p>
+                  <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
                 </div>
               ) : (
-                <div>Loading fonts...</div>
+                <div>加载字体中...</div>
               )}
             </div>
 
@@ -214,9 +215,9 @@ function App() {
 
 
           <div className="row mt-3">
-            <p className="h1">Details</p>
+            <p className="h1">文字</p>
             <div className="col-md-12">
-              <label>Anime</label>
+              <label>作品名</label>
               <input
                 type="text"
                 className="form-control"
@@ -226,7 +227,7 @@ function App() {
                 onWheel={(e) => e.target.blur()}
               />
 
-              <label>Episode</label>
+              <label>集数</label>
               <input
                 type="number"
                 className="form-control"
@@ -235,7 +236,7 @@ function App() {
                 onChange={handleChange}
                 onWheel={(e) => e.target.blur()}
               />
-              <label>Time</label>
+              <label>时间</label>
               <input
                 type="number"
                 className="form-control"
@@ -244,7 +245,7 @@ function App() {
                 onChange={handleChange}
                 onWheel={(e) => e.target.blur()}
               />
-              <label>Spot Name</label>
+              <label>地名</label>
               <input
                 type="text"
                 className="form-control"
@@ -253,7 +254,7 @@ function App() {
                 onChange={handleChange}
                 onWheel={(e) => e.target.blur()}
               />
-              <label>Latitude</label>
+              <label>经度</label>
               <input
                 type="text"
                 className="form-control"
@@ -262,7 +263,7 @@ function App() {
                 onChange={handleChange}
                 onWheel={(e) => e.target.blur()}
               />
-              <label>Longitude</label>
+              <label>纬度</label>
               <input
                 type="text"
                 className="form-control"
@@ -280,10 +281,10 @@ function App() {
 
 
           <div className="row mt-3">
-            <p class="h1">Adjustment</p>
+            <p class="h1">调整实拍图</p>
 
             <div className="col-md-4 d-flex align-items-center">
-              <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, scale: 1 })}>Scale</label>
+              <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, scale: 1 })}>缩</label>
               <input
                 type="range"
                 className="form-range"
@@ -327,10 +328,10 @@ function App() {
 
 
           <div className="row mt-3">
-            <p class="h1">Results</p>
+            <p class="h1">合并结果</p>
 
             <div class="col-md-5">
-              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>Download Merged Image</a>
+              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>下载</a>
             </div>
           </div>
           <div className="row mt-3">
