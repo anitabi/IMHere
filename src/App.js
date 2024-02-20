@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, handleChange } from 'react';
 
 // function to add text
 function addTextToCanvasL(canvas, text, x, y, size, color) {
@@ -40,6 +40,16 @@ function App() {
   const now = new Date();
   const formattedDateTime = now.toISOString().replace(/:\d+\.\d+Z$/, '').replace(/[-T:]/g, '').replace(/\..+/, '');
   const downloadFileName = `MergedImage_${formattedDateTime}.png`;
+
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPosInfo(prevState => ({
+      ...prevState,
+      [name]: name === 'episode' || name === 'time' ? parseInt(value, 10) : name === 'x' || name === 'y' ? parseFloat(value) : value
+    }));
+  };
 
 
   const handleImageChange = (event, setImage, canvasRef) => {
@@ -130,7 +140,7 @@ function App() {
       secondImg.src = URL.createObjectURL(secondImage);
     };
     firstImg.src = URL.createObjectURL(firstImage);
-  }, [p2Para, firstImage, secondImage]);
+  }, [p2Para, posInfo, firstImage, secondImage]);
 
   return (
     <div className="App">
@@ -139,9 +149,9 @@ function App() {
           <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
             <span class="fs-4">I'm Here!</span>
           </a>
-          <ul class="nav nav-pills">
+          {/* <ul class="nav nav-pills">
             <li><button className="btn">About</button></li>
-          </ul>
+          </ul> */}
         </header>
 
         <div>
@@ -176,8 +186,6 @@ function App() {
                 disabled={!firstImage}
               />
             </div>
-
-
           </div>
           <div className="row">
             <div className="col-md-5">
@@ -187,8 +195,75 @@ function App() {
             <div className="col-md-5">
               <canvas ref={secondCanvasRef} style={{ maxWidth: '50%' }}></canvas>
             </div>
-
           </div>
+
+
+          <div className="row mt-3">
+            <p className="h1">Details</p>
+            <div className="col-md-12">
+              <label>Anime</label>
+              <input
+                type="text"
+                className="form-control"
+                name="anime"
+                value={posInfo.anime}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+
+              <label>Episode</label>
+              <input
+                type="number"
+                className="form-control"
+                name="episode"
+                value={posInfo.episode}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+              <label>Time</label>
+              <input
+                type="number"
+                className="form-control"
+                name="time"
+                value={posInfo.time}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+              <label>Spot Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={posInfo.name}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+              <label>Latitude</label>
+              <input
+                type="text"
+                className="form-control"
+                name="x"
+                value={posInfo.x}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+              <label>Longitude</label>
+              <input
+                type="text"
+                className="form-control"
+                name="y"
+                value={posInfo.y}
+                onChange={handleChange}
+                onWheel={(e) => e.target.blur()}
+              />
+            </div>
+          </div>
+
+
+
+
+
+
           <div className="row mt-3">
             <p class="h1">Adjustment</p>
 
@@ -233,27 +308,44 @@ function App() {
               />
             </div>
           </div>
+
+
+
           <div className="row mt-3">
-
-
             <p class="h1">Results</p>
-
+            <div class="col-md-5">
+              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>Download Merged Image</a>
+            </div>
+          </div>
+          <div className="row mt-3">
             {mergedImageURL && (
               <div className="col-md-5">
                 <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '100%' }} />
               </div>
             )}
           </div>
-          <div className="row mt-2 mb-5">
-            <div class="col-md-5">
-              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>Download Merged Image</a>
-            </div>
 
-          </div>
         </div>
 
+
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
+          </div>
+
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+              <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
+                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
+              </a>
+
+
+            </li>
+          </ul>
+        </footer>
       </div>
-    </div>
+
+    </div >
   );
 }
 
