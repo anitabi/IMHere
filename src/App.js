@@ -31,6 +31,8 @@ function App() {
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
   const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
+  const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
+
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
 
@@ -64,13 +66,21 @@ function App() {
 
   const handleSecondImageChange = (event) => {
     handleImageChange(event, setSecondImage, secondCanvasRef);
-    if (firstImage) {
-      mergeImages(firstImage, event.target.files[0]);
-    }
   };
 
 
-  const mergeImages = (firstImage, secondImage) => {
+
+  useEffect(() => {
+    const font = new FontFace('UDDigiKyokashoR', 'url(./UDDigiKyokashoN-R.ttc)');
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      console.log('Font loaded');
+    }).catch(error => console.log('Font loading error:', error));
+  }, []); // 空依赖数组表示这个effect仅在组件挂载时运行一次
+
+
+  useEffect(() => {
+    if (!firstImage || !secondImage) return;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const firstImg = new Image();
@@ -87,13 +97,23 @@ function App() {
 
         canvas.width = w;
         canvas.height = 2.15 * h;
-        // set canvas bgc
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw two images
+        // Draw first images
         ctx.drawImage(firstImg, 0, 0);
-        ctx.drawImage(secondImg, 0, firstImg.height);
+
+        // Draw second images
+        // second image scale para
+        const scaleWidth = w * p2Para.scale;
+        const scaleHeight = w * p2Para.scale * (secondImg.height / secondImg.width);;
+
+        ctx.drawImage(secondImg, 0 + p2Para.x * w, h + p2Para.y * h, scaleWidth, scaleHeight);
+
+
+
+        // set footer bgc
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 2 * h, canvas.width, 0.15 * h);
+
 
         // Add Anime name
         addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
@@ -110,16 +130,7 @@ function App() {
     };
     // 确保firstImg.onload定义完成后设置firstImg的src
     firstImg.src = URL.createObjectURL(firstImage);
-  };
-
-  useEffect(() => {
-    const font = new FontFace('UDDigiKyokashoR', 'url(./UDDigiKyokashoN-R.ttc)');
-    font.load().then((loadedFont) => {
-      document.fonts.add(loadedFont);
-      console.log('Font loaded');
-    }).catch(error => console.log('Font loading error:', error));
-  }, []); // 空依赖数组表示这个effect仅在组件挂载时运行一次
-
+  }, [p2Para, firstImage, secondImage]);
 
   return (
     <div className="App">
@@ -155,6 +166,15 @@ function App() {
 
           </div>
           <div className="row mt-5">
+            <input
+              type="range"
+              min="0"
+              max="3"
+              step="0.01" // 可调整步长以控制滑动时值的变化精度
+              value={p2Para.scale}
+              onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
+            />
+
             <p class="h1">Results</p>
 
             {mergedImageURL && (
