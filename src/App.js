@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect, handleChange } from 'react';
 // function to add text
 function addTextToCanvasL(canvas, text, x, y, size, color) {
   const ctx = canvas.getContext('2d');
-  ctx.font = `${size}px UDDigiKyokashoR`;
+  ctx.font = `${size}px LXGWWenKai`;
   ctx.fillStyle = color;
   ctx.textAlign = 'left';
   ctx.fillText(text, x, y);
@@ -13,7 +13,7 @@ function addTextToCanvasL(canvas, text, x, y, size, color) {
 
 function addTextToCanvasR(canvas, text, x, y, size, color) {
   const ctx = canvas.getContext('2d');
-  ctx.font = `${size}px UDDigiKyokashoR`;
+  ctx.font = `${size}px LXGWWenKai`;
   ctx.fillStyle = color;
   ctx.textAlign = 'right';
   ctx.fillText(text, x, y);
@@ -81,7 +81,7 @@ function App() {
 
 
   useEffect(() => {
-    const font = new FontFace('UDDigiKyokashoR', 'url(./UDDigiKyokashoN-R.ttc)');
+    const font = new FontFace('LXGWWenKai', 'url(./LXGWWenKai.ttf)');
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
       console.log('Font loaded');
