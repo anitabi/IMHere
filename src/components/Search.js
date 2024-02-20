@@ -80,68 +80,76 @@ function Search({ updatePosInfo }) {
 
     return (
         <div className="Search container my-3">
-            <div class="row mb-2"><input
-                type="text"
-                className="form-control"
-                value={keyword}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-                placeholder="输入作品名"
-            />
+            <div className="row mb-2">
+                <div className='col'>
+                    <input
+                        type="text"
+                        className="form-control"
+                        value={keyword}
+                        onChange={handleChange}
+                        onKeyDown={handleKeyDown}
+                        placeholder="输入作品名"
+                    /></div>
             </div>
 
-            <div class="row">
-                {results.length > 0 && (
-                    <div className="list-group">
-                        {results.map((item) => (
-                            <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-2 align-items-center" aria-current="true">
-                                <a href={item.url} target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-decoration-none">
-                                    {item.images != null ? (<img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px' }} />) : <p>　　　　　</p>}
-                                    <div>
-                                        <h6 className="mb-0">{item.name_cn || item.name}</h6>
-                                        <p className="mb-0 opacity-75">{item.name}</p>
-                                        <p className="mb-0 opacity-75">{item.id}</p>
+            <div className="row">
+                <div className="col">
+                    {results.length > 0 && (
+                        <div className="list-group">
+                            {results.map((item) => (
+                                <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-2 align-items-center" aria-current="true">
+                                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-decoration-none">
+                                        {item.images != null ? (<img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px' }} />) : <p>　　　　　</p>}
+                                        <div>
+                                            <h6 className="mb-0">{item.name_cn || item.name}</h6>
+                                            <p className="mb-0 opacity-75">{item.name}</p>
+                                            <p className="mb-0 opacity-75">{item.id}</p>
+                                        </div>
+                                    </a>
+                                    <div className="ms-auto">
+                                        <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
                                     </div>
-                                </a>
-                                <div className="ms-auto">
-                                    <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
                                 </div>
-                            </div>
-                        ))}
+                            ))}
 
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="row">
+                <div className="col">
 
-                {points.length > 0 && showPoints && (
-                    <div className="row row-cols-2 row-cols-md-4 g-4">
-                        {points.map((point) => (
-                            <div key={point.id} className="col">
-                                <div className="card">
-                                    <img src={point.image} className="card-img-top" alt={point.cn || point.name} />
-                                    <div className="card-body">
+                    {points.length > 0 && showPoints && (
+                        <div className="row row-cols-2 row-cols-md-4 g-4">
+                            {points.map((point) => (
+                                <div key={point.id} className="col">
+                                    <div className="card">
+                                        <img src={point.image} className="card-img-top" alt={point.cn || point.name} />
+                                        <div className="card-body">
 
-                                        <div className="row">
-                                            <div className="col-7">
-                                                <h5 className="card-title">{point.cn || point.name}</h5>
-                                                <p className="card-text">EP{point.ep} {s2ms(point.s)} </p>
-                                            </div>
-                                            <div className="col-5 d-flex align-items-center justify-content-end">
-                                                <button
-                                                    type="button"
-                                                    className="btn btn-outline-primary"
-                                                    onClick={() => handleSelectScreenshot(point.id)}
-                                                >
-                                                    使用
-                                                </button>
+                                            <div className="row">
+                                                <div className="col-7">
+                                                    <h5 className="card-title">{point.cn || point.name}</h5>
+                                                    <p className="card-text">EP{point.ep} {s2ms(point.s)} </p>
+                                                </div>
+                                                <div className="col-5 d-flex align-items-center justify-content-end">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-outline-primary"
+                                                        onClick={() => handleSelectScreenshot(point.id)}
+                                                    >
+                                                        使用
+                                                    </button>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
