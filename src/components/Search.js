@@ -115,7 +115,7 @@ function Search({ updatePosInfo }) {
                     )}
                 </div>
             </div>
-            <div className="row">
+            <div className="row mt-2">
                 <div className="col">
 
                     {points.length > 0 && showPoints && (
