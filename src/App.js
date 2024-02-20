@@ -3,18 +3,34 @@ import './App.css';
 import React, { useState, useRef, useEffect } from 'react';
 
 // function to add text
-function addTextToCanvas(canvas, text, x, y, size, color) {
+function addTextToCanvasL(canvas, text, x, y, size, color) {
   const ctx = canvas.getContext('2d');
   ctx.font = `${size}px UDDigiKyokashoR`;
   ctx.fillStyle = color;
+  ctx.textAlign = 'left';
   ctx.fillText(text, x, y);
+}
+
+function addTextToCanvasR(canvas, text, x, y, size, color) {
+  const ctx = canvas.getContext('2d');
+  ctx.font = `${size}px UDDigiKyokashoR`;
+  ctx.fillStyle = color;
+  ctx.textAlign = 'right';
+  ctx.fillText(text, x, y);
+}
+
+// convert from seconds to minutes and seconds
+function s2ms(s) {
+  const minutes = Math.floor(s / 60);
+  const seconds = s % 60;
+  return minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
 }
 
 function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
-  const [posInfo, setPosInfo] = useState({ "name": "JR 町田駅南口", "anime": "ギヴン", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
+  const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
 
@@ -59,24 +75,29 @@ function App() {
     firstImg.onload = () => {
       secondImg.onload = () => {
         // size calculation
-        const textMargin = firstImg.height * 0.1;
-        const textSize = firstImg.height * 0.03;
+        const h = firstImg.height;
+        const w = firstImg.width;
+        const textMargin = 0.01 * w;
+        const textSize = 0.04 * h;
 
-        canvas.width = firstImg.width;
-        canvas.height = firstImg.height * 2.15;
+        canvas.width = w;
+        canvas.height = 2.15 * h;
         // set canvas bgc
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 现在绘制两个图像
+        // Draw two images
         ctx.drawImage(firstImg, 0, 0);
         ctx.drawImage(secondImg, 0, firstImg.height);
 
-        // 计算文本位置，使其居中并位于图片下方
-        const textX = canvas.width / 2;
-        const textY = firstImg.height + secondImg.height + textMargin;
-        // 绘制文本
-        addTextToCanvas(canvas, posInfo.name, textX, textY, textSize, '#000000');
+        // Add Anime name
+        addTextToCanvasL(canvas, "🎞 " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
+        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.episode.toString().padStart(2, '0') + " " + s2ms(posInfo.time), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+        addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
+        addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+
+
+        // set merged image url
         setMergedImageURL(canvas.toDataURL('image/png'));
       };
       // 设置secondImg.src在firstImg.onload内部，但要在secondImg.onload之后
@@ -133,7 +154,7 @@ function App() {
 
             {mergedImageURL && (
               <div>
-                <img src={mergedImageURL} alt="Merged" style={{ maxWidth: '50%' }} />
+                <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '50%' }} />
               </div>
             )}
           </div>

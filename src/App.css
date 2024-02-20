@@ -8,3 +8,7 @@
     display: block;
     /* 防止出现额外的空白和滚动条 */
 }
+
+#result {
+    box-shadow: 0 0 10px 0 #000;
+}
