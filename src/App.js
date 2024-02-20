@@ -33,7 +33,7 @@ function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
-  const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
+  const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "e": 5, "s": 502, "geo": [35.542906, 139.4449] });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -45,6 +45,12 @@ function App() {
   const formattedDateTime = now.toISOString().replace(/:\d+\.\d+Z$/, '').replace(/[-T:]/g, '').replace(/\..+/, '');
   const downloadFileName = `MergedImage_${formattedDateTime}.png`;
 
+
+
+  const updatePosInfo = (point) => {
+    console.log('updatePosInfo:', point);
+    setPosInfo(point);
+  };
 
 
   const handleChange = (e) => {
@@ -133,9 +139,9 @@ function App() {
 
         // Add Anime name
         addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.episode.toString().padStart(2, '0') + " " + s2ms(posInfo.time), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.e.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
         addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
-        addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+        addTextToCanvasR(canvas, posInfo.geo[0].toString() + "," + posInfo.geo[1].toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
 
 
         // set merged image url
@@ -161,7 +167,7 @@ function App() {
         </header>
 
         <div class="row">
-          <Search />
+          <Search updatePosInfo={updatePosInfo} />
 
         </div>
 
@@ -241,7 +247,7 @@ function App() {
               type="number"
               className="form-control"
               name="episode"
-              value={posInfo.episode}
+              value={posInfo.e}
               onChange={handleChange}
               onWheel={(e) => e.target.blur()}
             />
@@ -250,7 +256,7 @@ function App() {
               type="number"
               className="form-control"
               name="time"
-              value={posInfo.time}
+              value={posInfo.s}
               onChange={handleChange}
               onWheel={(e) => e.target.blur()}
             />
@@ -268,7 +274,7 @@ function App() {
               type="text"
               className="form-control"
               name="x"
-              value={posInfo.x}
+              value={posInfo.geo[0]}
               onChange={handleChange}
               onWheel={(e) => e.target.blur()}
             />
@@ -277,7 +283,7 @@ function App() {
               type="text"
               className="form-control"
               name="y"
-              value={posInfo.y}
+              value={posInfo.geo[1]}
               onChange={handleChange}
               onWheel={(e) => e.target.blur()}
             />

@@ -7,10 +7,13 @@ function s2ms(s) {
     return minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
 }
 
-function Search() {
+function Search({ updatePosInfo }) {
     const [keyword, setKeyword] = useState('');
+    const [animeName, setAnimeName] = useState('');
     const [results, setResults] = useState([]);
     const [points, setPoints] = useState([]);
+    const [showPoints, setShowPoints] = useState(true);
+
     const timerId = useRef(null);
 
     const handleChange = (event) => {
@@ -23,6 +26,7 @@ function Search() {
         try {
             const response = await axios.get(`https://api.bgm.tv/search/subject/${keyword}?type=2`);
             setResults(response.data.list);
+            setShowPoints(true);
         } catch (error) {
             console.error('搜索失败:', error);
         }
@@ -47,7 +51,6 @@ function Search() {
 
     const handleSelect = async (id) => {
         setResults([]);
-
         try {
             const response = await axios.get(`https://anitabi.cn/api/bangumi/${id}/lite`);
             const updatedPoints = response.data.litePoints.map(point => ({
@@ -60,11 +63,18 @@ function Search() {
 
         } catch (error) {
             console.error('Failed:', error);
+            setShowPoints(false);
         }
 
     };
 
-    const handleSelectScreenshot = async (id) => { };
+    const handleSelectScreenshot = async (pointId) => {
+        const selectedPoint = points.find(point => point.id === pointId);
+        const { id, ...restOfPoint } = selectedPoint;
+        const updatedPoint = { ...restOfPoint, anime: animeName };
+        updatePosInfo(updatedPoint);
+        setShowPoints(false);
+    };
 
 
     return (
@@ -85,7 +95,7 @@ function Search() {
                         {results.map((item) => (
                             <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-center" aria-current="true">
                                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-decoration-none">
-                                    <img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px', height: '64px' }} />
+                                    {item.images != null ? (<img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px', height: '64px' }} />) : null}
                                     <div>
                                         <h6 className="mb-0">{item.name_cn || item.name}</h6>
                                         <p className="mb-0 opacity-75">{item.name}</p>
@@ -93,7 +103,7 @@ function Search() {
                                     </div>
                                 </a>
                                 <div className="ms-auto">
-                                    <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
+                                    <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
                                 </div>
                             </div>
                         ))}
@@ -101,7 +111,7 @@ function Search() {
                     </div>
                 )}
 
-                {points.length > 0 && (
+                {points.length > 0 && showPoints && (
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {points.map((point) => (
                             <div key={point.id} className="col">
