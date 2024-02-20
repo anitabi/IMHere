@@ -32,6 +32,7 @@ function App() {
   const [mergedImageURL, setMergedImageURL] = useState('');
   const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
+  const [fontLoaded, setFontLoaded] = useState(false);
 
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
@@ -84,8 +85,8 @@ function App() {
     const font = new FontFace('LXGWWenKai', 'url(./LXGWWenKai.ttf)');
     font.load().then((loadedFont) => {
       document.fonts.add(loadedFont);
-      console.log('Font loaded');
-    }).catch(error => console.log('Font loading error:', error));
+      setFontLoaded(true);
+    }).catch(error => { console.log('Font loading error:', error); setFontLoaded(false); });
   }, []);
 
 
@@ -187,6 +188,20 @@ function App() {
               />
             </div>
           </div>
+          <div className="row">
+            <div>
+              {fontLoaded ? (
+                <div>
+                  <p style={{ fontFamily: 'LXGWWenKai' }}>Font loaded.</p>
+                </div>
+              ) : (
+                <div>Loading fonts...</div>
+              )}
+            </div>
+
+          </div>
+
+
           <div className="row">
             <div className="col-md-5">
               <canvas ref={firstCanvasRef} style={{ maxWidth: '50%' }} ></canvas>
@@ -313,6 +328,7 @@ function App() {
 
           <div className="row mt-3">
             <p class="h1">Results</p>
+
             <div class="col-md-5">
               <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>Download Merged Image</a>
             </div>
