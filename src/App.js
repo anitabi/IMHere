@@ -36,6 +36,7 @@ function App() {
   const [posInfo, setPosInfo] = useState({ "anime": "", "name": "", "ep": 0, "s": 0, "geo": [0, 0], "image": "" });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
+  const [fetchingPic, setFetchingPic] = useState(false);
 
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
@@ -49,10 +50,12 @@ function App() {
   const downloadAndDrawImage = async (imageUrl, setFirstImage, canvasRef) => {
     try {
       console.log('fetching image:', imageUrl);
+      setFetchingPic(true);
       const response = await fetch(imageUrl);
       if (!response.ok) throw new Error('Network response was not ok.');
+      setFetchingPic(false);
       const imageBlob = await response.blob();
-      const blobUrl = URL.createObjectURL(imageBlob); // 修正变量名以避免冲突
+      const blobUrl = URL.createObjectURL(imageBlob);
 
       const img = new Image();
       img.onload = () => {
@@ -254,6 +257,7 @@ function App() {
 
         <div className="row">
           <div className="col-md-5 col-6">
+            {fetchingPic && <p>正在加载原图...</p>}
             <canvas ref={firstCanvasRef} style={{ maxWidth: '80%' }} ></canvas>
 
           </div>
@@ -393,7 +397,7 @@ function App() {
 
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
           <div class="col-md-4 d-flex align-items-center">
-            <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
+            <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>, <span class="text-muted"> Data provided by Anitabi</span>
           </div>
 
           <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
