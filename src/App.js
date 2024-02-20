@@ -37,6 +37,7 @@ function App() {
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
   const [fetchingPic, setFetchingPic] = useState(false);
+  const [needText, setNeedText] = useState(true);
 
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
@@ -153,7 +154,11 @@ function App() {
         const textSize = 0.04 * h;
 
         canvas.width = w;
-        canvas.height = 2.15 * h;
+        if (needText) {
+          canvas.height = 2.15 * h;
+        } else {
+          canvas.height = 2 * h;
+        }
 
 
         // Draw second images
@@ -168,26 +173,26 @@ function App() {
 
 
 
-
-        // set footer bgc
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 2 * h, canvas.width, 0.15 * h);
-
-
-        // Add Anime name
-        addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
-        addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
-        addTextToCanvasR(canvas, posInfo.geo[0].toString() + "," + posInfo.geo[1].toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+        if (needText) {
+          // set footer bgc
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 2 * h, canvas.width, 0.15 * h);
 
 
+          // Add Anime name
+          addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
+          addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
+          addTextToCanvasR(canvas, posInfo.geo[0].toString() + "," + posInfo.geo[1].toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+
+        }
         // set merged image url
         setMergedImageURL(canvas.toDataURL('image/png'));
       };
       secondImg.src = URL.createObjectURL(secondImage);
     };
     firstImg.src = URL.createObjectURL(firstImage);
-  }, [p2Para, posInfo, firstImage, secondImage]);
+  }, [p2Para, posInfo, firstImage, secondImage, needText]);
 
   return (
     <div className="App">
@@ -255,70 +260,88 @@ function App() {
 
 
         <div className="row mt-3">
-          <p className="h1">文字</p>
-          {fontLoaded ? (
-            <div>
-              <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
-            </div>
-          ) : (
-            <div>加载字体中...</div>
-          )}
-          <div className="col-md-12">
-            <label>作品名</label>
-            <input
-              type="text"
-              className="form-control"
-              name="anime"
-              value={posInfo.anime}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
 
-            <label>集数</label>
-            <input
-              type="number"
-              className="form-control"
-              name="episode"
-              value={posInfo.ep}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
-            <label>时间</label>
-            <input
-              type="number"
-              className="form-control"
-              name="time"
-              value={posInfo.s}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
-            <label>地名</label>
-            <input
-              type="text"
-              className="form-control"
-              name="name"
-              value={posInfo.name}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
-            <label>经度</label>
-            <input
-              type="text"
-              className="form-control"
-              name="x"
-              value={posInfo.geo[0]}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
-            <label>纬度</label>
-            <input
-              type="text"
-              className="form-control"
-              name="y"
-              value={posInfo.geo[1]}
-              onChange={handleChange}
-              onWheel={(e) => e.target.blur()}
-            />
+          <div className="col-md-12">
+            <p className="h1">文本</p>
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="textCheckbox"
+                checked={needText}
+                onChange={(e) => setNeedText(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="textCheckbox">
+                需要文本
+              </label>
+            </div>
+            {fontLoaded ? (
+              <div>
+                <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
+              </div>
+            ) : (
+              <div>加载字体中，首次使用耗时较长...</div>
+            )}
+            {needText && (
+              <div>
+
+                <label>作品名</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="anime"
+                  value={posInfo.anime}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+
+                <label>集数</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="episode"
+                  value={posInfo.ep}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+                <label>时间</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="time"
+                  value={posInfo.s}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+                <label>地名</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={posInfo.name}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+                <label>经度</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="x"
+                  value={posInfo.geo[0]}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+                <label>纬度</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="y"
+                  value={posInfo.geo[1]}
+                  onChange={handleChange}
+                  onWheel={(e) => e.target.blur()}
+                />
+              </div>
+            )}
           </div>
         </div>
 
