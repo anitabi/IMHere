@@ -241,19 +241,6 @@ function App() {
             />
           </div>
         </div>
-        <div className="row">
-          <div>
-            {fontLoaded ? (
-              <div>
-                <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
-              </div>
-            ) : (
-              <div>加载字体中...</div>
-            )}
-          </div>
-
-        </div>
-
 
         <div className="row">
           <div className="col-md-5 col-6">
@@ -269,6 +256,13 @@ function App() {
 
         <div className="row mt-3">
           <p className="h1">文字</p>
+          {fontLoaded ? (
+            <div>
+              <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
+            </div>
+          ) : (
+            <div>加载字体中...</div>
+          )}
           <div className="col-md-12">
             <label>作品名</label>
             <input
