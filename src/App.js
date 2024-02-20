@@ -1,6 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import React, { useState, useRef, useEffect, handleChange } from 'react';
+import Search from './components/Search';
+
 
 // function to add text aligned to left
 function addTextToCanvasL(canvas, text, x, y, size, color) {
@@ -146,6 +148,8 @@ function App() {
 
   return (
     <div className="App">
+
+
       <div className="container">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
           <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -156,213 +160,217 @@ function App() {
           </ul> */}
         </header>
 
-        <div>
-          <div className="row mb-3">
-            <div className="col-md-5">
-              <button
-                className={`btn ${!secondImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
-                onClick={() => document.getElementById('fileInput').click()}
-                disabled={secondImage}>
-                1.上传截图
-              </button>
-              <input
-                type="file"
-                id="fileInput"
-                style={{ display: 'none' }}
-                onChange={handleFirstImageChange}
-              />
-            </div>
+        <div class="row">
+          <Search />
 
-            <div className="col-md-5">
-              <button
-                className={`btn ${firstImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
-                onClick={() => firstImage && document.getElementById('secondFileInput').click()}
-                disabled={!firstImage}>
-                2.上传实景
-              </button>
-              <input
-                type="file"
-                id="secondFileInput"
-                style={{ display: 'none' }}
-                onChange={handleSecondImageChange}
-                disabled={!firstImage}
-              />
-            </div>
-          </div>
-          <div className="row">
-            <div>
-              {fontLoaded ? (
-                <div>
-                  <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
-                </div>
-              ) : (
-                <div>加载字体中...</div>
-              )}
-            </div>
+        </div>
 
+
+        <div className="row mb-3">
+          <div className="col-md-5">
+            <button
+              className={`btn ${!secondImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
+              onClick={() => document.getElementById('fileInput').click()}
+              disabled={secondImage}>
+              1.上传截图
+            </button>
+            <input
+              type="file"
+              id="fileInput"
+              style={{ display: 'none' }}
+              onChange={handleFirstImageChange}
+            />
           </div>
 
-
-          <div className="row">
-            <div className="col-md-5">
-              <canvas ref={firstCanvasRef} style={{ maxWidth: '50%' }} ></canvas>
-
-            </div>
-            <div className="col-md-5">
-              <canvas ref={secondCanvasRef} style={{ maxWidth: '50%' }}></canvas>
-            </div>
+          <div className="col-md-5">
+            <button
+              className={`btn ${firstImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
+              onClick={() => firstImage && document.getElementById('secondFileInput').click()}
+              disabled={!firstImage}>
+              2.上传实景
+            </button>
+            <input
+              type="file"
+              id="secondFileInput"
+              style={{ display: 'none' }}
+              onChange={handleSecondImageChange}
+              disabled={!firstImage}
+            />
           </div>
-
-
-          <div className="row mt-3">
-            <p className="h1">文字</p>
-            <div className="col-md-12">
-              <label>作品名</label>
-              <input
-                type="text"
-                className="form-control"
-                name="anime"
-                value={posInfo.anime}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-
-              <label>集数</label>
-              <input
-                type="number"
-                className="form-control"
-                name="episode"
-                value={posInfo.episode}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-              <label>时间</label>
-              <input
-                type="number"
-                className="form-control"
-                name="time"
-                value={posInfo.time}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-              <label>地名</label>
-              <input
-                type="text"
-                className="form-control"
-                name="name"
-                value={posInfo.name}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-              <label>经度</label>
-              <input
-                type="text"
-                className="form-control"
-                name="x"
-                value={posInfo.x}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-              <label>纬度</label>
-              <input
-                type="text"
-                className="form-control"
-                name="y"
-                value={posInfo.y}
-                onChange={handleChange}
-                onWheel={(e) => e.target.blur()}
-              />
-            </div>
-          </div>
-
-
-
-
-
-
-          <div className="row mt-3">
-            <p class="h1">调整实拍图</p>
-
-            <div className="col-md-4 d-flex align-items-center">
-              <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, scale: 1 })}>缩</label>
-              <input
-                type="range"
-                className="form-range"
-                id="scaleRange"
-                min="0"
-                max="2"
-                step="0.04"
-                value={p2Para.scale}
-                onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
-              />
-            </div>
-
-            <div className="col-md-4 d-flex align-items-center">
-              <label htmlFor="xRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, x: 0 })}>X</label>
-              <input
-                type="range"
-                className="form-range"
-                id="xRange"
-                min="-1"
-                max="1"
-                step="0.02"
-                value={p2Para.x}
-                onChange={(e) => setP2Para({ ...p2Para, x: parseFloat(e.target.value) })}
-              />
-            </div>
-            <div className="col-md-4 d-flex align-items-center">
-              <label htmlFor="yRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, y: 0 })}>Y</label>
-              <input
-                type="range"
-                className="form-range"
-                id="yRange"
-                min="-1"
-                max="1"
-                step="0.02"
-                value={p2Para.y}
-                onChange={(e) => setP2Para({ ...p2Para, y: parseFloat(e.target.value) })}
-              />
-            </div>
-          </div>
-
-
-
-          <div className="row mt-3">
-            <p class="h1">合并结果</p>
-
-            <div class="col-md-5">
-              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>下载</a>
-            </div>
-          </div>
-          <div className="row mt-3">
-            {mergedImageURL && (
-              <div className="col-md-5">
-                <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '100%' }} />
+        </div>
+        <div className="row">
+          <div>
+            {fontLoaded ? (
+              <div>
+                <p style={{ fontFamily: 'LXGWWenKai' }}>字体已加载.</p>
               </div>
+            ) : (
+              <div>加载字体中...</div>
             )}
           </div>
 
         </div>
 
 
-        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <div class="col-md-4 d-flex align-items-center">
-            <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
+        <div className="row">
+          <div className="col-md-5">
+            <canvas ref={firstCanvasRef} style={{ maxWidth: '50%' }} ></canvas>
+
+          </div>
+          <div className="col-md-5">
+            <canvas ref={secondCanvasRef} style={{ maxWidth: '50%' }}></canvas>
+          </div>
+        </div>
+
+
+        <div className="row mt-3">
+          <p className="h1">文字</p>
+          <div className="col-md-12">
+            <label>作品名</label>
+            <input
+              type="text"
+              className="form-control"
+              name="anime"
+              value={posInfo.anime}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+
+            <label>集数</label>
+            <input
+              type="number"
+              className="form-control"
+              name="episode"
+              value={posInfo.episode}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+            <label>时间</label>
+            <input
+              type="number"
+              className="form-control"
+              name="time"
+              value={posInfo.time}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+            <label>地名</label>
+            <input
+              type="text"
+              className="form-control"
+              name="name"
+              value={posInfo.name}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+            <label>经度</label>
+            <input
+              type="text"
+              className="form-control"
+              name="x"
+              value={posInfo.x}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+            <label>纬度</label>
+            <input
+              type="text"
+              className="form-control"
+              name="y"
+              value={posInfo.y}
+              onChange={handleChange}
+              onWheel={(e) => e.target.blur()}
+            />
+          </div>
+        </div>
+
+
+
+
+
+
+        <div className="row mt-3">
+          <p class="h1">调整实拍图</p>
+
+          <div className="col-md-4 d-flex align-items-center">
+            <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, scale: 1 })}>缩</label>
+            <input
+              type="range"
+              className="form-range"
+              id="scaleRange"
+              min="0"
+              max="2"
+              step="0.04"
+              value={p2Para.scale}
+              onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
+            />
           </div>
 
-          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3">
-              <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
-                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
-              </a>
+          <div className="col-md-4 d-flex align-items-center">
+            <label htmlFor="xRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, x: 0 })}>X</label>
+            <input
+              type="range"
+              className="form-range"
+              id="xRange"
+              min="-1"
+              max="1"
+              step="0.02"
+              value={p2Para.x}
+              onChange={(e) => setP2Para({ ...p2Para, x: parseFloat(e.target.value) })}
+            />
+          </div>
+          <div className="col-md-4 d-flex align-items-center">
+            <label htmlFor="yRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, y: 0 })}>Y</label>
+            <input
+              type="range"
+              className="form-range"
+              id="yRange"
+              min="-1"
+              max="1"
+              step="0.02"
+              value={p2Para.y}
+              onChange={(e) => setP2Para({ ...p2Para, y: parseFloat(e.target.value) })}
+            />
+          </div>
+        </div>
 
 
-            </li>
-          </ul>
-        </footer>
+
+        <div className="row mt-3">
+          <p class="h1">合并结果</p>
+
+          <div class="col-md-5">
+            <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>下载</a>
+          </div>
+        </div>
+        <div className="row mt-3">
+          {mergedImageURL && (
+            <div className="col-md-5">
+              <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '100%' }} />
+            </div>
+          )}
+        </div>
+
       </div>
 
-    </div >
+
+      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+          <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+          <li class="ms-3">
+            <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
+              <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
+            </a>
+
+
+          </li>
+        </ul>
+      </footer>
+    </div>
+
   );
 }
 
