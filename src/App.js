@@ -98,15 +98,17 @@ function App() {
         canvas.width = w;
         canvas.height = 2.15 * h;
 
-        // Draw first images
-        ctx.drawImage(firstImg, 0, 0);
 
         // Draw second images
         // second image scale para
         const scaleWidth = w * p2Para.scale;
-        const scaleHeight = w * p2Para.scale * (secondImg.height / secondImg.width);;
-
+        const scaleHeight = w * p2Para.scale * (secondImg.height / secondImg.width);
         ctx.drawImage(secondImg, 0 + p2Para.x * w, h + p2Para.y * h, scaleWidth, scaleHeight);
+
+        // Draw first images
+        ctx.drawImage(firstImg, 0, 0);
+
+
 
 
 
@@ -165,15 +167,50 @@ function App() {
             </div>
 
           </div>
+          <div className="col-md-5">
+            <div className="mb-3">
+              <label htmlFor="scaleRange" className="form-label">Scale: {p2Para.scale}</label>
+              <input
+                type="range"
+                className="form-range"
+                id="scaleRange"
+                min="0"
+                max="2"
+                step="0.04"
+                value={p2Para.scale}
+                onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="xRange" className="form-label">X Position: {p2Para.x}</label>
+              <input
+                type="range"
+                className="form-range"
+                id="xRange"
+                min="-1"
+                max="1"
+                step="0.02"
+                value={p2Para.x}
+                onChange={(e) => setP2Para({ ...p2Para, x: parseFloat(e.target.value) })}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="yRange" className="form-label">Y Position: {p2Para.y}</label>
+              <input
+                type="range"
+                className="form-range"
+                id="yRange"
+                min="-1"
+                max="1"
+                step="0.02"
+                value={p2Para.y}
+                onChange={(e) => setP2Para({ ...p2Para, y: parseFloat(e.target.value) })}
+              />
+            </div>
+          </div>
+
           <div className="row mt-5">
-            <input
-              type="range"
-              min="0"
-              max="3"
-              step="0.01" // 可调整步长以控制滑动时值的变化精度
-              value={p2Para.scale}
-              onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
-            />
+
 
             <p class="h1">Results</p>
 
