@@ -70,7 +70,7 @@ function Search({ updatePosInfo }) {
 
     const handleSelectScreenshot = async (pointId) => {
         const selectedPoint = points.find(point => point.id === pointId);
-        const { id, ...restOfPoint } = selectedPoint;
+        const { id, cn, ...restOfPoint } = selectedPoint;
         const updatedPoint = { ...restOfPoint, anime: animeName };
         updatePosInfo(updatedPoint);
         setShowPoints(false);
