@@ -207,7 +207,7 @@ function App() {
 
 
         <div className="row mb-3">
-          <div className="col-md-5">
+          <div className="col-md-5 col-6">
             <button
               className={`btn ${!secondImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
               onClick={() => document.getElementById('fileInput').click()}
@@ -222,7 +222,7 @@ function App() {
             />
           </div>
 
-          <div className="col-md-5">
+          <div className="col-md-5 col-6">
             <button
               className={`btn ${firstImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
               onClick={() => firstImage && document.getElementById('secondFileInput').click()}
@@ -253,12 +253,12 @@ function App() {
 
 
         <div className="row">
-          <div className="col-md-5">
-            <canvas ref={firstCanvasRef} style={{ maxWidth: '50%' }} ></canvas>
+          <div className="col-md-5 col-6">
+            <canvas ref={firstCanvasRef} style={{ maxWidth: '80%' }} ></canvas>
 
           </div>
-          <div className="col-md-5">
-            <canvas ref={secondCanvasRef} style={{ maxWidth: '50%' }}></canvas>
+          <div className="col-md-5 col-6">
+            <canvas ref={secondCanvasRef} style={{ maxWidth: '80%' }}></canvas>
           </div>
         </div>
 

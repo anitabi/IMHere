@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import './Search.css';
 
 function s2ms(s) {
     const minutes = Math.floor(s / 60);
@@ -93,9 +94,9 @@ function Search({ updatePosInfo }) {
                 {results.length > 0 && (
                     <div className="list-group">
                         {results.map((item) => (
-                            <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-center" aria-current="true">
+                            <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-2 align-items-center" aria-current="true">
                                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="d-flex align-items-center text-decoration-none">
-                                    {item.images != null ? (<img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px', height: '64px' }} />) : null}
+                                    {item.images != null ? (<img src={item.images.common} alt={item.name} className="d-flex align-self-center me-3" style={{ width: '64px' }} />) : <p>　　　　　</p>}
                                     <div>
                                         <h6 className="mb-0">{item.name_cn || item.name}</h6>
                                         <p className="mb-0 opacity-75">{item.name}</p>
@@ -112,7 +113,7 @@ function Search({ updatePosInfo }) {
                 )}
 
                 {points.length > 0 && showPoints && (
-                    <div className="row row-cols-1 row-cols-md-3 g-4">
+                    <div className="row row-cols-2 row-cols-md-4 g-4">
                         {points.map((point) => (
                             <div key={point.id} className="col">
                                 <div className="card">
@@ -130,7 +131,7 @@ function Search({ updatePosInfo }) {
                                                     className="btn btn-outline-primary"
                                                     onClick={() => handleSelectScreenshot(point.id)}
                                                 >
-                                                    选择截图
+                                                    使用
                                                 </button>
 
                                             </div>
