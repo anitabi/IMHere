@@ -167,9 +167,11 @@ function App() {
             </div>
 
           </div>
-          <div className="col-md-5">
-            <div className="mb-3">
-              <label htmlFor="scaleRange" className="form-label">Scale: {p2Para.scale}</label>
+          <div className="row mt-3">
+            <p class="h1">Adjustment</p>
+
+            <div className="col-md-4 d-flex align-items-center">
+              <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, scale: 1 })}>Scale</label>
               <input
                 type="range"
                 className="form-range"
@@ -181,8 +183,9 @@ function App() {
                 onChange={(e) => setP2Para({ ...p2Para, scale: parseFloat(e.target.value) })}
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="xRange" className="form-label">X Position: {p2Para.x}</label>
+
+            <div className="col-md-4 d-flex align-items-center">
+              <label htmlFor="xRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, x: 0 })}>X</label>
               <input
                 type="range"
                 className="form-range"
@@ -194,8 +197,8 @@ function App() {
                 onChange={(e) => setP2Para({ ...p2Para, x: parseFloat(e.target.value) })}
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="yRange" className="form-label">Y Position: {p2Para.y}</label>
+            <div className="col-md-4 d-flex align-items-center">
+              <label htmlFor="yRange" className="form-label me-2" onClick={() => setP2Para({ ...p2Para, y: 0 })}>Y</label>
               <input
                 type="range"
                 className="form-range"
@@ -208,8 +211,7 @@ function App() {
               />
             </div>
           </div>
-
-          <div className="row mt-5">
+          <div className="row mt-3">
 
 
             <p class="h1">Results</p>
