@@ -21,7 +21,7 @@ function Search() {
         if (!keyword.trim()) return;
 
         try {
-            const response = await axios.get(`https://api.bgm.tv/search/subject/${keyword}`);
+            const response = await axios.get(`https://api.bgm.tv/search/subject/${keyword}?type=2`);
             setResults(response.data.list);
         } catch (error) {
             console.error('搜索失败:', error);
@@ -64,6 +64,8 @@ function Search() {
 
     };
 
+    const handleSelectScreenshot = async (id) => { };
+
 
     return (
         <div className="Search container my-3">
@@ -78,7 +80,7 @@ function Search() {
             </div>
 
             <div class="row">
-                {results.length > 0 ? (
+                {results.length > 0 && (
                     <div className="list-group">
                         {results.map((item) => (
                             <div key={item.id} className="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-center" aria-current="true">
@@ -97,8 +99,6 @@ function Search() {
                         ))}
 
                     </div>
-                ) : (
-                    <p className="text-center text-lg"></p>
                 )}
 
                 {points.length > 0 && (
@@ -108,8 +108,23 @@ function Search() {
                                 <div className="card">
                                     <img src={point.image} className="card-img-top" alt={point.cn || point.name} />
                                     <div className="card-body">
-                                        <h5 className="card-title">{point.cn || point.name}</h5>
-                                        <p className="card-text">EP{point.ep} {s2ms(point.s)} </p>
+
+                                        <div className="row">
+                                            <div className="col-7">
+                                                <h5 className="card-title">{point.cn || point.name}</h5>
+                                                <p className="card-text">EP{point.ep} {s2ms(point.s)} </p>
+                                            </div>
+                                            <div className="col-5 d-flex align-items-center justify-content-end">
+                                                <button
+                                                    type="button"
+                                                    className="btn btn-outline-primary"
+                                                    onClick={() => handleSelectScreenshot(point.id)}
+                                                >
+                                                    选择截图
+                                                </button>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
