@@ -1,11 +1,20 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+// function to add text
+function addTextToCanvas(canvas, text, x, y, size, color) {
+  const ctx = canvas.getContext('2d');
+  ctx.font = `${size}px UDDigiKyokashoR`;
+  ctx.fillStyle = color;
+  ctx.fillText(text, x, y);
+}
 
 function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
+  const [posInfo, setPosInfo] = useState({ "name": "JR 町田駅南口", "anime": "ギヴン", "episode": 5, "time": 502, "x": 35.542906, "y": 139.4449 });
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
 
@@ -40,25 +49,50 @@ function App() {
   };
 
 
-
   const mergeImages = (firstImage, secondImage) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const firstImg = new Image();
     const secondImg = new Image();
 
+
     firstImg.onload = () => {
-      canvas.width = Math.max(firstImg.width, secondImg.width);
-      canvas.height = firstImg.height + secondImg.height;
-      ctx.drawImage(firstImg, 0, 0);
       secondImg.onload = () => {
+        // size calculation
+        const textMargin = firstImg.height * 0.1;
+        const textSize = firstImg.height * 0.03;
+
+        canvas.width = firstImg.width;
+        canvas.height = firstImg.height * 2.15;
+        // set canvas bgc
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 现在绘制两个图像
+        ctx.drawImage(firstImg, 0, 0);
         ctx.drawImage(secondImg, 0, firstImg.height);
+
+        // 计算文本位置，使其居中并位于图片下方
+        const textX = canvas.width / 2;
+        const textY = firstImg.height + secondImg.height + textMargin;
+        // 绘制文本
+        addTextToCanvas(canvas, posInfo.name, textX, textY, textSize, '#000000');
         setMergedImageURL(canvas.toDataURL('image/png'));
       };
+      // 设置secondImg.src在firstImg.onload内部，但要在secondImg.onload之后
       secondImg.src = URL.createObjectURL(secondImage);
     };
+    // 确保firstImg.onload定义完成后设置firstImg的src
     firstImg.src = URL.createObjectURL(firstImage);
   };
+
+  useEffect(() => {
+    const font = new FontFace('UDDigiKyokashoR', 'url(./UDDigiKyokashoN-R.ttc)');
+    font.load().then((loadedFont) => {
+      document.fonts.add(loadedFont);
+      console.log('Font loaded');
+    }).catch(error => console.log('Font loading error:', error));
+  }, []); // 空依赖数组表示这个effect仅在组件挂载时运行一次
 
 
   return (
@@ -79,18 +113,18 @@ function App() {
               <input type="file" onChange={handleFirstImageChange} />
 
             </div>
-            <div className="col-md-4">
+            <div className="col-md-5">
               <input type="file" onChange={handleSecondImageChange} disabled={!firstImage} />
             </div>
 
           </div>
           <div className="row">
             <div className="col-md-5">
-              <canvas ref={firstCanvasRef}></canvas>
+              <canvas ref={firstCanvasRef} style={{ maxWidth: '70%' }} ></canvas>
 
             </div>
-            <div className="col-md-4">
-              <canvas ref={secondCanvasRef}></canvas>
+            <div className="col-md-5">
+              <canvas ref={secondCanvasRef} style={{ maxWidth: '70%' }}></canvas>
             </div>
 
           </div>
@@ -99,7 +133,7 @@ function App() {
 
             {mergedImageURL && (
               <div>
-                <img src={mergedImageURL} alt="Merged" style={{ maxWidth: '100%' }} />
+                <img src={mergedImageURL} alt="Merged" style={{ maxWidth: '50%' }} />
               </div>
             )}
           </div>

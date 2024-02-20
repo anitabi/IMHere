@@ -1,0 +1,10 @@
+* {
+    background-color: #999999;
+}
+
+.canvas-container canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* 防止出现额外的空白和滚动条 */
+}
