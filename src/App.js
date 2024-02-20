@@ -350,9 +350,9 @@ function App() {
               type="range"
               className="form-range"
               id="xRange"
-              min="-1"
-              max="1"
-              step="0.02"
+              min="-0.7"
+              max="0.7"
+              step="0.01"
               value={p2Para.x}
               onChange={(e) => setP2Para({ ...p2Para, x: parseFloat(e.target.value) })}
             />
@@ -363,9 +363,9 @@ function App() {
               type="range"
               className="form-range"
               id="yRange"
-              min="-1"
-              max="1"
-              step="0.02"
+              min="-0.7"
+              max="0.7"
+              step="0.01"
               value={p2Para.y}
               onChange={(e) => setP2Para({ ...p2Para, y: parseFloat(e.target.value) })}
             />
