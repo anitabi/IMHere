@@ -151,7 +151,7 @@ function App() {
                 className={`btn ${!secondImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
                 onClick={() => document.getElementById('fileInput').click()}
                 disabled={secondImage}>
-                上传截图
+                1.上传截图
               </button>
               <input
                 type="file"
@@ -166,7 +166,7 @@ function App() {
                 className={`btn ${firstImage ? 'btn-outline-primary' : 'btn-outline-secondary disabled'}`}
                 onClick={() => firstImage && document.getElementById('secondFileInput').click()}
                 disabled={!firstImage}>
-                上传实景
+                2.上传实景
               </button>
               <input
                 type="file"
