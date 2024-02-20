@@ -33,7 +33,7 @@ function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
-  const [posInfo, setPosInfo] = useState({ "anime": "ギヴン", "name": "JR 町田駅南口", "e": 5, "s": 502, "geo": [35.542906, 139.4449] });
+  const [posInfo, setPosInfo] = useState({ "anime": "", "name": "", "ep": 0, "s": 0, "geo": [0, 0], "image": "" });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -46,11 +46,45 @@ function App() {
   const downloadFileName = `MergedImage_${formattedDateTime}.png`;
 
 
+  const downloadAndDrawImage = async (imageUrl, setFirstImage, canvasRef) => {
+    try {
+      console.log('fetching image:', imageUrl);
+      const response = await fetch(imageUrl);
+      if (!response.ok) throw new Error('Network response was not ok.');
+      const imageBlob = await response.blob();
+      const blobUrl = URL.createObjectURL(imageBlob); // 修正变量名以避免冲突
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = canvasRef.current;
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        // const imageDataUrl = canvas.toDataURL();
+        setFirstImage(imageBlob); // 假设setFirstImage可以处理DataURL
+      };
+      img.onerror = (e) => {
+        // 处理图片加载错误
+        console.error('Error loading image:', e);
+      };
+      img.src = blobUrl; // 使用修正后的变量名
+    } catch (error) {
+      console.error('Error fetching or drawing image:', error);
+    }
+  };
+
+
 
   const updatePosInfo = (point) => {
-    console.log('updatePosInfo:', point);
     setPosInfo(point);
+    posInfo.image = point.image;
+    if (point.image) {
+      downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef); // 如果有图片链接，则下载、绘制并保存图片
+    }
   };
+
 
 
   const handleChange = (e) => {
@@ -139,7 +173,7 @@ function App() {
 
         // Add Anime name
         addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.e.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+        addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
         addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
         addTextToCanvasR(canvas, posInfo.geo[0].toString() + "," + posInfo.geo[1].toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
 
@@ -247,7 +281,7 @@ function App() {
               type="number"
               className="form-control"
               name="episode"
-              value={posInfo.e}
+              value={posInfo.ep}
               onChange={handleChange}
               onWheel={(e) => e.target.blur()}
             />
