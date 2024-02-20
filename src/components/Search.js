@@ -13,6 +13,7 @@ function Search({ updatePosInfo }) {
     const [results, setResults] = useState([]);
     const [points, setPoints] = useState([]);
     const [showPoints, setShowPoints] = useState(true);
+    const [noResult, setNoResult] = useState(false);
 
     const timerId = useRef(null);
 
@@ -22,13 +23,14 @@ function Search({ updatePosInfo }) {
 
     const search = async () => {
         if (!keyword.trim()) return;
-
+        setNoResult(false);
         try {
             const response = await axios.get(`https://api.bgm.tv/search/subject/${keyword}?type=2`);
             setResults(response.data.list);
             setShowPoints(true);
         } catch (error) {
             console.error('搜索失败:', error);
+            setNoResult(true);
         }
     };
 
@@ -63,6 +65,7 @@ function Search({ updatePosInfo }) {
 
         } catch (error) {
             console.error('Failed:', error);
+            setNoResult(true);
             setShowPoints(false);
         }
 
@@ -90,6 +93,7 @@ function Search({ updatePosInfo }) {
                         placeholder="输入作品名"
                     /></div>
             </div>
+            <div>{noResult && (<p>无结果。</p>)}</div>
 
             <div className="row">
                 <div className="col">
