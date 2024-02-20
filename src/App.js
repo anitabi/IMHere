@@ -34,6 +34,11 @@ function App() {
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
 
+  // unique filename for download
+  const now = new Date();
+  const formattedDateTime = now.toISOString().replace(/:\d+\.\d+Z$/, '').replace(/[-T:]/g, '').replace(/\..+/, '');
+  const downloadFileName = `MergedImage_${formattedDateTime}.png`;
+
 
   const handleImageChange = (event, setImage, canvasRef) => {
     const file = event.target.files[0];
@@ -91,7 +96,7 @@ function App() {
         ctx.drawImage(secondImg, 0, firstImg.height);
 
         // Add Anime name
-        addTextToCanvasL(canvas, "🎞 " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
+        addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
         addTextToCanvasL(canvas, "⏱️ EP" + posInfo.episode.toString().padStart(2, '0') + " " + s2ms(posInfo.time), textMargin, 2.1 * h + textMargin, textSize, '#000000');
         addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
         addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
@@ -129,23 +134,23 @@ function App() {
         </header>
 
         <div>
-          <div className="row">
+          <div className="row mb-3">
             <div className="col-md-5">
-              <input type="file" onChange={handleFirstImageChange} />
+              <input class="form-control" type="file" onChange={handleFirstImageChange} />
 
             </div>
             <div className="col-md-5">
-              <input type="file" onChange={handleSecondImageChange} disabled={!firstImage} />
+              <input class="form-control" type="file" onChange={handleSecondImageChange} disabled={!firstImage} />
             </div>
 
           </div>
           <div className="row">
             <div className="col-md-5">
-              <canvas ref={firstCanvasRef} style={{ maxWidth: '70%' }} ></canvas>
+              <canvas ref={firstCanvasRef} style={{ maxWidth: '50%' }} ></canvas>
 
             </div>
             <div className="col-md-5">
-              <canvas ref={secondCanvasRef} style={{ maxWidth: '70%' }}></canvas>
+              <canvas ref={secondCanvasRef} style={{ maxWidth: '50%' }}></canvas>
             </div>
 
           </div>
@@ -153,14 +158,15 @@ function App() {
             <p class="h1">Results</p>
 
             {mergedImageURL && (
-              <div>
-                <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '50%' }} />
+              <div className="col-md-5">
+                <img src={mergedImageURL} id="result" alt="Merged" style={{ maxWidth: '100%' }} />
               </div>
             )}
           </div>
-          <div className="row mt-2">
-
-            <a href={mergedImageURL} download="merged-image.png">Download Merged Image</a>
+          <div className="row mt-2 mb-5">
+            <div class="col-md-5">
+              <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>Download Merged Image</a>
+            </div>
 
           </div>
         </div>
