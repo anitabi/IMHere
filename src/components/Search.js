@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import './Search.css';
 
 function s2ms(s) {
     const minutes = Math.floor(s / 60);
