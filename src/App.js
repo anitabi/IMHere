@@ -79,7 +79,7 @@ function App() {
 
   const updatePosInfo = (point) => {
     setPosInfo(point);
-    posInfo.image = point.image;
+    posInfo.image = point.image.replace("?plan=h360", "");
     if (point.image) {
       downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef); // 如果有图片链接，则下载、绘制并保存图片
     }
@@ -391,24 +391,26 @@ function App() {
           )}
         </div>
 
+        <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+          <div class="col-md-4 d-flex align-items-center">
+            <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
+          </div>
+
+          <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+              <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
+                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
+              </a>
+
+
+            </li>
+          </ul>
+        </footer>
+
       </div>
 
 
-      <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <div class="col-md-4 d-flex align-items-center">
-          <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}><span class="mb-3 mb-md-0 text-muted">© Jacky HE</span></a>
-        </div>
 
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-          <li class="ms-3">
-            <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
-              <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
-            </a>
-
-
-          </li>
-        </ul>
-      </footer>
     </div>
 
   );
