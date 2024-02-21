@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import React, { useState, useRef, useEffect, handleChange } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Search from './components/Search';
 
 
@@ -33,7 +33,7 @@ function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
-  const [posInfo, setPosInfo] = useState({ "anime": "", "name": "", "ep": 0, "s": 0, "geo": [0, 0], "image": "" });
+  const [posInfo, setPosInfo] = useState({ "anime": "", "name": "", "ep": 0, "s": 0, "x": 0, "y": 0, "image": "" });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
   const [fetchingPic, setFetchingPic] = useState(false);
@@ -83,7 +83,8 @@ function App() {
 
   const updatePosInfo = (point) => {
     setPosInfo(point);
-    posInfo.image = point.image.replace("?plan=h360", "");
+    if (point.image)
+      posInfo.image = point.image.replace("?plan=h360", "");
     if (point.image) {
       downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef); // 如果有图片链接，则下载、绘制并保存图片
     }
@@ -93,10 +94,7 @@ function App() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPosInfo(prevState => ({
-      ...prevState,
-      [name]: name === 'episode' || name === 'time' ? parseInt(value, 10) : name === 'x' || name === 'y' ? parseFloat(value) : value
-    }));
+    setPosInfo({ ...posInfo, [name]: value });
   };
 
 
@@ -181,9 +179,11 @@ function App() {
 
           // Add Anime name
           addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-          addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+          if (posInfo.ep > 0)
+            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
           addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
-          addTextToCanvasR(canvas, posInfo.geo[0].toString() + "," + posInfo.geo[1].toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+          if (posInfo.x && posInfo.y)
+            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
 
         }
         // set merged image url
@@ -299,7 +299,7 @@ function App() {
                 <input
                   type="number"
                   className="form-control"
-                  name="episode"
+                  name="ep"
                   value={posInfo.ep}
                   onChange={handleChange}
                   onWheel={(e) => e.target.blur()}
@@ -308,7 +308,7 @@ function App() {
                 <input
                   type="number"
                   className="form-control"
-                  name="time"
+                  name="s"
                   value={posInfo.s}
                   onChange={handleChange}
                   onWheel={(e) => e.target.blur()}
@@ -327,7 +327,7 @@ function App() {
                   type="text"
                   className="form-control"
                   name="x"
-                  value={posInfo.geo[0]}
+                  value={posInfo.x}
                   onChange={handleChange}
                   onWheel={(e) => e.target.blur()}
                 />
@@ -336,7 +336,7 @@ function App() {
                   type="text"
                   className="form-control"
                   name="y"
-                  value={posInfo.geo[1]}
+                  value={posInfo.y}
                   onChange={handleChange}
                   onWheel={(e) => e.target.blur()}
                 />

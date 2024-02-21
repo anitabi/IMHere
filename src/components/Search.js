@@ -55,12 +55,26 @@ function Search({ updatePosInfo }) {
         setResults([]);
         try {
             const response = await axios.get(`https://anitabi.cn/api/bangumi/${id}/lite`);
-            const updatedPoints = response.data.litePoints.map(point => ({
+            // if exist image field, replace h160 with h360
+            let updatedPoints = response.data.litePoints.map(point => ({ ...point }));
+            if (response.data.litePoints[0].image) {
+                console.log("image mapped");
+                updatedPoints = response.data.litePoints.map(point => ({
+                    ...point,
+                    image: point.image.replace('h160', 'h360')
+                }));
+            }
+            console.log('Points data', updatedPoints);
+
+            // change pos[0] to x, pos[1] to y
+            updatedPoints = updatedPoints.map(point => ({
                 ...point,
-                image: point.image.replace('h160', 'h360')
+                x: point.geo[0],
+                y: point.geo[1],
+                s: point.s || 0,
+                ep: point.ep || 0
             }));
 
-            console.log('Points data', updatedPoints);
             setPoints(updatedPoints);
 
         } catch (error) {
@@ -127,7 +141,7 @@ function Search({ updatePosInfo }) {
                             {points.map((point) => (
                                 <div key={point.id} className="col">
                                     <div className="card">
-                                        <img src={point.image} className="card-img-top" alt={point.cn || point.name} />
+                                        {point.image && (<img src={point.image} className="card-img-top" alt={point.cn || point.name} />)}
                                         <div className="card-body">
 
                                             <div className="row">
