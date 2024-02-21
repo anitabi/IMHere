@@ -62,7 +62,13 @@ function Search({ updatePosInfo }) {
                 image: point.image ? point.image.replace('h160', 'h360') : point.image
             }));
 
+
             console.log('Points data', updatedPoints);
+
+            if (updatedPoints.length === 0) {
+                setNoResult(true);
+                setShowPoints(false);
+            }
 
             // change pos[0] to x, pos[1] to y
             updatedPoints = updatedPoints.map(point => ({
@@ -80,10 +86,7 @@ function Search({ updatePosInfo }) {
             setNoResult(true);
             setShowPoints(false);
         }
-        // if there is no result, set noResult to true
-        if (points.length === 0) {
-            setNoResult(true);
-        }
+
 
     };
 
@@ -155,14 +158,18 @@ function Search({ updatePosInfo }) {
                                         {point.image && (<img src={point.image} className="card-img-top" alt={point.cn || point.name} />)}
                                         <div className="card-body">
                                             <div className="row">
-                                                <div className="col-7">
+                                                <div className="col-8">
                                                     <h5 className="card-title">{point.cn || point.name}</h5>
-                                                    {point.s > 0 ? (
-                                                        <p className="card-text">EP{point.ep} {s2ms(point.s)}</p>
-                                                    ) : null}
-
+                                                    <div className="card-text">
+                                                        {point.s > 0 && (
+                                                            <span>EP{point.ep} {s2ms(point.s)} </span>
+                                                        )}
+                                                        {point.originURL ? (
+                                                            <a href={point.originURL} target="_blank" rel="noopener noreferrer">来源</a>) : "用户上传"}
+                                                    </div>
                                                 </div>
-                                                <div className="col-5 d-flex align-items-center justify-content-end">
+
+                                                <div className="col-4 d-flex align-items-center justify-content-end">
                                                     <button
                                                         type="button"
                                                         className="btn btn-outline-primary"
