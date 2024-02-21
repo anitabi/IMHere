@@ -145,7 +145,7 @@ function Search({ updatePosInfo }) {
                     )}
 
                     {points.length > 0 && showPoints && (
-                        <div className="row row-cols-2 row-cols-md-4 g-4">
+                        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3">
                             {points.map((point) => (
                                 <div key={point.id} className="col">
                                     <div className="card">
@@ -153,7 +153,7 @@ function Search({ updatePosInfo }) {
                                         <div className="card-body">
                                             <div className="row">
                                                 <div className="col-8">
-                                                    <h5 className="card-title">{point.cn || point.name}</h5>
+                                                    <h6 className="card-title ">{point.cn || point.name}</h6>
                                                     <div className="card-text">
                                                         {point.s > 0 && (
                                                             <span>EP{point.ep} {s2ms(point.s)} </span>
@@ -166,7 +166,7 @@ function Search({ updatePosInfo }) {
                                                 <div className="col-4 d-flex align-items-center justify-content-end">
                                                     <button
                                                         type="button"
-                                                        className="btn btn-outline-primary"
+                                                        className="btn btn-outline-primary p-2 p-sm-2 p-md-1 p-lg-1 p-xl-2"
                                                         onClick={() => handleSelectScreenshot(point.id)}
                                                     >
                                                         使用
