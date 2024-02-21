@@ -10,6 +10,7 @@ function s2ms(s) {
 function Search({ updatePosInfo }) {
     const [keyword, setKeyword] = useState('');
     const [animeName, setAnimeName] = useState('');
+    const [animeNameCn, setAnimeNameCn] = useState('');
     const [results, setResults] = useState([]);
     const [points, setPoints] = useState([]);
     const [showPoints, setShowPoints] = useState(true);
@@ -55,14 +56,7 @@ function Search({ updatePosInfo }) {
         setResults([]);
         try {
             const response = await axios.get(`https://api.anitabi.cn/bangumi/${id}/points/detail`);
-            // if exist image field, replace h160 with h360
-            let updatedPoints = response.data.map(point => ({
-                ...point,
-                // check if there are images
-                image: point.image ? point.image.replace('h160', 'h360') : point.image
-            }));
-
-
+            let updatedPoints = response.data;
             console.log('Points data', updatedPoints);
 
             if (updatedPoints.length === 0) {
@@ -93,7 +87,7 @@ function Search({ updatePosInfo }) {
     const handleSelectScreenshot = async (pointId) => {
         const selectedPoint = points.find(point => point.id === pointId);
         const { id, cn, ...restOfPoint } = selectedPoint;
-        const updatedPoint = { ...restOfPoint, anime: animeName };
+        const updatedPoint = { ...restOfPoint, anime: animeName, anime_cn: animeNameCn };
         updatePosInfo(updatedPoint);
         setShowPoints(false);
     };
@@ -129,7 +123,7 @@ function Search({ updatePosInfo }) {
                                         </div>
                                     </a>
                                     <div className="ms-auto">
-                                        <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
+                                        <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); setAnimeNameCn(item.name_cn); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
                                     </div>
                                 </div>
                             ))}

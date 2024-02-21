@@ -33,11 +33,12 @@ function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
   const [mergedImageURL, setMergedImageURL] = useState('');
-  const [posInfo, setPosInfo] = useState({ "anime": "", "name": "", "ep": 0, "s": 0, "x": 0, "y": 0, "image": "" });
+  const [posInfo, setPosInfo] = useState({ "anime": "", "anime_cn": "", "name": "", "ep": 0, "s": 0, "x": 0, "y": 0, "image": "" });
   const [p2Para, setP2Para] = useState({ "scale": 1, "x": 0, "y": 0 });
   const [fontLoaded, setFontLoaded] = useState(false);
   const [fetchingPic, setFetchingPic] = useState(false);
   const [needText, setNeedText] = useState(true);
+  const [useCNName, setUseCNName] = useState(false);
 
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
@@ -83,7 +84,7 @@ function App() {
   const updatePosInfo = (point) => {
     setPosInfo(point);
     if (point.image)
-      posInfo.image = point.image.replace("?plan=h360", "");
+      posInfo.image = point.image.replace("?plan=h160", "");
     if (point.image) {
       downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef);
     }
@@ -178,15 +179,19 @@ function App() {
 
 
           // Add Anime name
-          addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-          if (posInfo.ep > 0) {
-            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000')
-          } else if (posInfo.ep === 0 && posInfo.s > 0) {
-            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000')
+          if (!useCNName) {
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000')
+          } else {
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime_cn, textMargin, 2.04 * h + textMargin, textSize, '#000000')
           }
-          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
+          if (posInfo.ep > 0) {
+            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
+          } else if (posInfo.ep === 0 && posInfo.s > 0) {
+            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
+          }
+          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3, 2.04 * h + textMargin, textSize, '#000000');
           if (posInfo.x && posInfo.y)
-            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
+            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7, 2.1 * h + textMargin, textSize, '#000000');
 
         }
         // set merged image url
@@ -195,7 +200,7 @@ function App() {
       secondImg.src = URL.createObjectURL(secondImage);
     };
     firstImg.src = URL.createObjectURL(firstImage);
-  }, [p2Para, posInfo, firstImage, secondImage, needText]);
+  }, [p2Para, posInfo, firstImage, secondImage, needText, useCNName]);
 
   return (
     <div className="App">
@@ -287,35 +292,68 @@ function App() {
             )}
             {needText && (
               <div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="textCheckbox"
+                    checked={useCNName}
+                    onChange={(e) => setUseCNName(e.target.checked)}
+                  />
+                  <label className="form-check-label" htmlFor="textCheckbox">
+                    使用中文作品名
+                  </label>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    <label>作品名（中文）</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="anime_cn"
+                      value={posInfo.anime_cn}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                  <div className="col-md-6">
 
-                <label>作品名</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="anime"
-                  value={posInfo.anime}
-                  onChange={handleChange}
-                  onWheel={(e) => e.target.blur()}
-                />
+                    <label>作品名</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="anime"
+                      value={posInfo.anime}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6 col-md-6">
+                    <label>集数</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="ep"
+                      value={posInfo.ep}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                  <div className="col-6 col-md-6">
 
-                <label>集数</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="ep"
-                  value={posInfo.ep}
-                  onChange={handleChange}
-                  onWheel={(e) => e.target.blur()}
-                />
-                <label>时间</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="s"
-                  value={posInfo.s}
-                  onChange={handleChange}
-                  onWheel={(e) => e.target.blur()}
-                />
+                    <label>时间</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="s"
+                      value={posInfo.s}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                </div>
                 <label>地名</label>
                 <input
                   type="text"
@@ -325,24 +363,32 @@ function App() {
                   onChange={handleChange}
                   onWheel={(e) => e.target.blur()}
                 />
-                <label>经度</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="x"
-                  value={posInfo.x}
-                  onChange={handleChange}
-                  onWheel={(e) => e.target.blur()}
-                />
-                <label>纬度</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="y"
-                  value={posInfo.y}
-                  onChange={handleChange}
-                  onWheel={(e) => e.target.blur()}
-                />
+                <div className="row">
+                  <div className="col-6 col-md-6">
+
+                    <label>经度</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="x"
+                      value={posInfo.x}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                  <div className="col-6 col-md-6">
+
+                    <label>纬度</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="y"
+                      value={posInfo.y}
+                      onChange={handleChange}
+                      onWheel={(e) => e.target.blur()}
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </div>
