@@ -73,6 +73,20 @@ function Search({ updatePosInfo }) {
                 ep: point.ep || 0
             }));
 
+            // sort by episode and timestamp
+            updatedPoints.sort((a, b) => {
+                // sort by ep
+                if (a.ep < b.ep) return -1;
+                if (a.ep > b.ep) return 1;
+
+                // set by s
+                if (a.s < b.s) return -1;
+                if (a.s > b.s) return 1;
+
+                return 0;
+            });
+
+
             setPoints(updatedPoints);
 
         } catch (error) {
