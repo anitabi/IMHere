@@ -54,16 +54,14 @@ function Search({ updatePosInfo }) {
     const handleSelect = async (id) => {
         setResults([]);
         try {
-            const response = await axios.get(`https://anitabi.cn/api/bangumi/${id}/lite`);
+            const response = await axios.get(`https://api.anitabi.cn/bangumi/${id}/points/detail`);
             // if exist image field, replace h160 with h360
-            let updatedPoints = response.data.litePoints.map(point => ({ ...point }));
-            if (response.data.litePoints[0].image) {
-                console.log("image mapped");
-                updatedPoints = response.data.litePoints.map(point => ({
-                    ...point,
-                    image: point.image.replace('h160', 'h360')
-                }));
-            }
+            let updatedPoints = response.data.map(point => ({
+                ...point,
+                // check if there are images
+                image: point.image ? point.image.replace('h160', 'h360') : point.image
+            }));
+
             console.log('Points data', updatedPoints);
 
             // change pos[0] to x, pos[1] to y
@@ -81,6 +79,10 @@ function Search({ updatePosInfo }) {
             console.error('Failed:', error);
             setNoResult(true);
             setShowPoints(false);
+        }
+        // if there is no result, set noResult to true
+        if (points.length === 0) {
+            setNoResult(true);
         }
 
     };
@@ -155,7 +157,10 @@ function Search({ updatePosInfo }) {
                                             <div className="row">
                                                 <div className="col-7">
                                                     <h5 className="card-title">{point.cn || point.name}</h5>
-                                                    <p className="card-text">EP{point.ep} {s2ms(point.s)} </p>
+                                                    {point.s > 0 ? (
+                                                        <p className="card-text">EP{point.ep} {s2ms(point.s)}</p>
+                                                    ) : null}
+
                                                 </div>
                                                 <div className="col-5 d-flex align-items-center justify-content-end">
                                                     <button
