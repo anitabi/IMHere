@@ -67,13 +67,12 @@ function App() {
         ctx.drawImage(img, 0, 0);
 
         // const imageDataUrl = canvas.toDataURL();
-        setFirstImage(imageBlob); // 假设setFirstImage可以处理DataURL
+        setFirstImage(imageBlob);
       };
       img.onerror = (e) => {
-        // 处理图片加载错误
         console.error('Error loading image:', e);
       };
-      img.src = blobUrl; // 使用修正后的变量名
+      img.src = blobUrl;
     } catch (error) {
       console.error('Error fetching or drawing image:', error);
     }
@@ -86,7 +85,7 @@ function App() {
     if (point.image)
       posInfo.image = point.image.replace("?plan=h360", "");
     if (point.image) {
-      downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef); // 如果有图片链接，则下载、绘制并保存图片
+      downloadAndDrawImage(posInfo.image, setFirstImage, firstCanvasRef);
     }
   };
 
