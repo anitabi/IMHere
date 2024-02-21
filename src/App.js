@@ -145,8 +145,9 @@ function App() {
     firstImg.onload = () => {
       secondImg.onload = () => {
         // size calculation
-        const h = firstImg.height;
-        const w = firstImg.width;
+        // min(h) = 720px
+        const h = firstImg.height < 720 ? 720 : firstImg.height;
+        const w = firstImg.width * (h / firstImg.height);
         const textMargin = 0.01 * w;
         const textSize = 0.04 * h;
 
@@ -165,7 +166,7 @@ function App() {
         ctx.drawImage(secondImg, 0 + p2Para.x * w, h + p2Para.y * h, scaleWidth, scaleHeight);
 
         // Draw first images
-        ctx.drawImage(firstImg, 0, 0);
+        ctx.drawImage(firstImg, 0, 0, w, h);
 
 
 
@@ -178,8 +179,11 @@ function App() {
 
           // Add Anime name
           addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000');
-          if (posInfo.ep > 0)
-            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000');
+          if (posInfo.ep > 0) {
+            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000')
+          } else if (posInfo.ep === 0 && posInfo.s > 0) {
+            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin, 2.1 * h + textMargin, textSize, '#000000')
+          }
           addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin, 2.04 * h + textMargin, textSize, '#000000');
           if (posInfo.x && posInfo.y)
             addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w * 1.005 - textMargin, 2.1 * h + textMargin, textSize, '#000000');
