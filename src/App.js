@@ -422,7 +422,7 @@ function App() {
 
           <ul class="nav col-3 justify-content-end list-unstyled d-flex">
             <li class="ms-3">
-              <a className="text-muted" target="_blank" href="https://github.com/ihkk/imhere">
+              <a className="text-muted" target="_blank" href="https://github.com/anitabi/IMHere">
                 <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
               </a>
 
