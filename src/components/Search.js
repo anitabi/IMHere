@@ -135,6 +135,15 @@ function Search({ updatePosInfo }) {
             </div>
             <div className="row mt-2">
                 <div className="col">
+                    {!showPoints && (
+                        <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={() => setShowPoints(true)}
+                        >
+                            展开巡礼点
+                        </button>
+                    )}
 
                     {points.length > 0 && showPoints && (
                         <div className="row row-cols-2 row-cols-md-4 g-4">
@@ -143,7 +152,6 @@ function Search({ updatePosInfo }) {
                                     <div className="card">
                                         {point.image && (<img src={point.image} className="card-img-top" alt={point.cn || point.name} />)}
                                         <div className="card-body">
-
                                             <div className="row">
                                                 <div className="col-7">
                                                     <h5 className="card-title">{point.cn || point.name}</h5>
