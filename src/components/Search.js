@@ -52,7 +52,8 @@ function Search({ updatePosInfo }) {
     };
 
 
-    const handleSelect = async (id) => {
+    const handleSelect = async (item) => {
+        const id = item.id;
         setResults([]);
         try {
             const response = await axios.get(`https://api.anitabi.cn/bangumi/${id}/points/detail`);
@@ -112,14 +113,23 @@ function Search({ updatePosInfo }) {
         <div className="Search container my-3">
             <div className="row mb-2">
                 <div className='col'>
-                    <input
-                        type="text"
-                        className="form-control"
-                        value={keyword}
-                        onChange={handleChange}
-                        onKeyDown={handleKeyDown}
-                        placeholder="输入作品名以检索数据库"
-                    /></div>
+                    <div className="input-group">
+                        <span className="input-group-text" id="basic-addon1">
+                            <i className="bi bi-camera-reels-fill"></i>
+                        </span>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={keyword}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
+                            placeholder="输入作品名以检索数据库"
+                            aria-label="输入作品名以检索数据库"
+                            aria-describedby="basic-addon1"
+                        />
+                    </div>
+
+                </div>
             </div>
             <div>{noResult && (<p>无结果。</p>)}</div>
 
@@ -138,7 +148,7 @@ function Search({ updatePosInfo }) {
                                         </div>
                                     </a>
                                     <div className="ms-auto">
-                                        <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); setAnimeNameCn(item.name_cn); handleSelect(item.id); }}>选择</button> {/* 修改后的按钮 */}
+                                        <button type="button" className="btn btn-outline-primary" onClick={(e) => { e.stopPropagation(); setAnimeName(item.name); setAnimeNameCn(item.name_cn); handleSelect(item); }}>选择</button> {/* 修改后的按钮 */}
                                     </div>
                                 </div>
                             ))}
