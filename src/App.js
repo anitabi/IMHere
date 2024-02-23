@@ -467,8 +467,7 @@ function App() {
             <span class="mb-md-0 text-muted">
               ©
               <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}>Jacky HE</a>,
-              data provider <a href="https://anitabi.cn/" class="link" target="_blank" style={{ textDecoration: "none" }}><i class="bi bi-compass"></i>
-                Anitabi</a>
+              data provider <a href="https://anitabi.cn/" class="link" target="_blank" style={{ textDecoration: "none" }}><i class="bi bi-compass"></i> Anitabi</a> & <a href="https://bgm.tv/" class="link" target="_blank" style={{ textDecoration: "none" }}><i class="bi bi-display"></i> Bangumi</a>
             </span>
           </div>
 
