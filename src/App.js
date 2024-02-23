@@ -297,11 +297,11 @@ function App() {
                   <input
                     className="form-check-input"
                     type="checkbox"
-                    id="textCheckbox"
+                    id="useCNNameCheckbox"
                     checked={useCNName}
                     onChange={(e) => setUseCNName(e.target.checked)}
                   />
-                  <label className="form-check-label" htmlFor="textCheckbox">
+                  <label className="form-check-label" htmlFor="useCNNameCheckbox">
                     使用中文作品名
                   </label>
                 </div>
