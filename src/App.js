@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 import React, { useState, useRef, useEffect } from 'react';
 import Search from './components/Search';
