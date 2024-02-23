@@ -467,14 +467,15 @@ function App() {
             <span class="mb-md-0 text-muted">
               ©
               <a href="https://github.com/ihkk" class="link" target="_blank" style={{ textDecoration: "none" }}>Jacky HE</a>,
-              data provider <a href="https://anitabi.cn/" class="link" target="_blank" style={{ textDecoration: "none" }}>Anitabi</a>
+              data provider <a href="https://anitabi.cn/" class="link" target="_blank" style={{ textDecoration: "none" }}><i class="bi bi-compass"></i>
+                Anitabi</a>
             </span>
           </div>
 
           <ul class="nav col-3 justify-content-end list-unstyled d-flex">
             <li class="ms-3">
               <a className="text-muted" target="_blank" href="https://github.com/anitabi/IMHere">
-                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" style={{ width: '24px', height: '24px' }} />
+                <i class="bi bi-github"></i>
               </a>
 
 
