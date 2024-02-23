@@ -173,8 +173,27 @@ function Search({ updatePosInfo }) {
                                                         {point.s > 0 && (
                                                             <span>EP{point.ep} {s2ms(point.s)} </span>
                                                         )}
-                                                        {point.originURL ? (
-                                                            <a href={point.originURL} target="_blank" rel="noopener noreferrer">来源</a>) : "用户上传"}
+                                                        {
+                                                            point.originURL.includes("google.com/maps") ? (
+                                                                <a href={point.originURL} target="_blank" rel="noopener noreferrer">
+                                                                    <i class="bi bi-geo-fill"></i>
+                                                                </a>
+                                                            ) : point.originURL && point.origin.includes("Anitabi@") ? (
+                                                                <div>
+                                                                    <span>
+                                                                        <a href={point.originURL} target="_blank" rel="noopener noreferrer">
+                                                                            <i class="bi bi-person-fill"></i>
+                                                                        </a> {point.origin.replace("Anitabi@", "@")}
+                                                                    </span>
+                                                                </div>
+                                                            ) : !point.originURL ? (
+                                                                "用户上传"
+                                                            ) : (
+                                                                <a href={point.originURL} target="_blank" rel="noopener noreferrer"><i class="bi bi-bookmark-dash-fill"></i></a>
+                                                            )
+
+                                                        }
+
                                                     </div>
                                                 </div>
 
