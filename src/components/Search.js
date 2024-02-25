@@ -184,7 +184,9 @@ function Search({ updatePosInfo }) {
                                                             <span>EP{point.ep} {s2ms(point.s)} </span>
                                                         )}
                                                         {
-                                                            point.originURL.includes("google.com/maps") ? (
+                                                            !point.originURL ? (
+                                                                "用户上传"
+                                                            ) : point.originURL.includes("google.com/maps") ? (
                                                                 <a href={point.originURL} target="_blank" rel="noopener noreferrer">
                                                                     <i class="bi bi-geo-fill"></i>
                                                                 </a>
@@ -196,11 +198,10 @@ function Search({ updatePosInfo }) {
                                                                         </a> {point.origin.replace("Anitabi@", "@")}
                                                                     </span>
                                                                 </div>
-                                                            ) : !point.originURL ? (
-                                                                "用户上传"
                                                             ) : (
                                                                 <a href={point.originURL} target="_blank" rel="noopener noreferrer"><i class="bi bi-bookmark-dash-fill"></i></a>
                                                             )
+
 
                                                         }
 
