@@ -30,6 +30,8 @@ function s2ms(s) {
   return minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
 }
 
+
+
 function App() {
   const [firstImage, setFirstImage] = useState(null);
   const [secondImage, setSecondImage] = useState(null);
@@ -41,6 +43,9 @@ function App() {
   const [needText, setNeedText] = useState(true);
   const [useCNName, setUseCNName] = useState(false);
 
+  const minutes = Math.floor(posInfo.s / 60);
+  const seconds = posInfo.s % 60;
+
   const firstCanvasRef = useRef(null);
   const secondCanvasRef = useRef(null);
 
@@ -48,6 +53,18 @@ function App() {
   const now = new Date();
   const formattedDateTime = now.toISOString().replace(/:\d+\.\d+Z$/, '').replace(/[-T:]/g, '').replace(/\..+/, '');
   const downloadFileName = `MergedImage_${formattedDateTime}.png`;
+
+
+  const handleMinutesChange = (e) => {
+    const mins = parseInt(e.target.value, 10) || 0;
+    setPosInfo({ ...posInfo, s: mins * 60 + seconds });
+  };
+
+  // 更新秒数
+  const handleSecondsChange = (e) => {
+    const secs = parseInt(e.target.value, 10) || 0;
+    setPosInfo({ ...posInfo, s: minutes * 60 + secs });
+  };
 
 
   const downloadAndDrawImage = async (imageUrl, setFirstImage, canvasRef) => {
@@ -343,16 +360,28 @@ function App() {
                     />
                   </div>
                   <div className="col-6 col-md-6">
+                    <div className="row">
+                      <label>时间: </label>
+                      <div className="col -6">
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={minutes}
+                          onChange={handleMinutesChange}
+                          placeholder="分钟"
+                        />
+                      </div>
+                      <div className="col -6">
 
-                    <label>时间</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="s"
-                      value={posInfo.s}
-                      onChange={handleChange}
-                      onWheel={(e) => e.target.blur()}
-                    />
+                        <input
+                          type="number"
+                          className="form-control"
+                          value={seconds}
+                          onChange={handleSecondsChange}
+                          placeholder="秒数"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <label>地名</label>
