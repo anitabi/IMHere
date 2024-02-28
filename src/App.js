@@ -204,7 +204,7 @@ function App() {
           }
           if (posInfo.ep > 0) {
             addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
-          } else if (posInfo.ep === 0 && posInfo.s > 0) {
+          } else if (posInfo.ep == 0 && posInfo.s > 0) {
             addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
           }
           addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3, 2.04 * h + textMargin, textSize, '#000000');
