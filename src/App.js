@@ -42,6 +42,8 @@ function App() {
   const [fetchingPic, setFetchingPic] = useState(false);
   const [needText, setNeedText] = useState(true);
   const [useCNName, setUseCNName] = useState(false);
+  // margin
+  const [m, setM] = useState(0);
 
   const minutes = Math.floor(posInfo.s / 60);
   const seconds = posInfo.s % 60;
@@ -165,7 +167,6 @@ function App() {
       secondImg.onload = () => {
         // size calculation
         // min(h) = 720px
-        const m = 0;
         const h = firstImg.height < 720 ? 720 : firstImg.height;
         const w = firstImg.width * (h / firstImg.height);
         const textMargin = 0.01 * w;
@@ -228,7 +229,7 @@ function App() {
       secondImg.src = URL.createObjectURL(secondImage);
     };
     firstImg.src = URL.createObjectURL(firstImage);
-  }, [p2Para, posInfo, firstImage, secondImage, needText, useCNName]);
+  }, [p2Para, posInfo, firstImage, secondImage, needText, useCNName, m]);
 
   return (
     <div className="App">
@@ -483,6 +484,27 @@ function App() {
             />
           </div>
         </div>
+
+
+        <div className="row mt-3">
+          <p className="h1">调整边框</p>
+
+          <div className="col-md-12 d-flex align-items-center">
+            <label htmlFor="scaleRange" className="form-label me-2" onClick={() => setM(0)}>0</label>
+            <input
+              type="range"
+              className="form-range"
+              id="scaleRange"
+              min="0"
+              max="50"
+              step="10"
+              value={m}
+              onChange={(e) => setM(parseFloat(e.target.value))}
+            /><label className="form-label ml-2" onClick={() => setM(50)}>50</label>
+          </div>
+        </div>
+
+
 
 
 
