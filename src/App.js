@@ -192,7 +192,10 @@ function App() {
         // Draw first images
         ctx.drawImage(firstImg, 0 + m, 0 + m, w, h);
 
-
+        // add stroke
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2 * m;
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
 
         if (needText) {
@@ -217,10 +220,7 @@ function App() {
             addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000');
 
         }
-        // add stroke
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 2 * m;
-        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
 
 
         // set merged image url
