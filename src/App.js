@@ -176,6 +176,9 @@ function App() {
         } else {
           canvas.height = 2 * h;
         }
+        // add background color
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 
         // Draw second images
@@ -478,7 +481,6 @@ function App() {
 
         <div className="row mt-3">
           <p class="h1">合并结果</p>
-
           <div class="col-md-5">
             <a href={mergedImageURL} className="btn btn-outline-primary" download={downloadFileName}>下载</a>
           </div>
