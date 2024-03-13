@@ -165,16 +165,17 @@ function App() {
       secondImg.onload = () => {
         // size calculation
         // min(h) = 720px
+        const m = 0;
         const h = firstImg.height < 720 ? 720 : firstImg.height;
         const w = firstImg.width * (h / firstImg.height);
         const textMargin = 0.01 * w;
         const textSize = 0.04 * h;
 
-        canvas.width = w;
+        canvas.width = w + 2 * m;
         if (needText) {
-          canvas.height = 2.15 * h;
+          canvas.height = 2.15 * h + m;
         } else {
-          canvas.height = 2 * h;
+          canvas.height = 2 * h + 3 * m;
         }
 
 
@@ -182,10 +183,10 @@ function App() {
         // second image scale para
         const scaleWidth = w * p2Para.scale;
         const scaleHeight = w * p2Para.scale * (secondImg.height / secondImg.width);
-        ctx.drawImage(secondImg, 0 + p2Para.x * w, h + p2Para.y * h, scaleWidth, scaleHeight);
+        ctx.drawImage(secondImg, 0 + p2Para.x * w + m, h + p2Para.y * h + 2 * m, scaleWidth, scaleHeight);
 
         // Draw first images
-        ctx.drawImage(firstImg, 0, 0, w, h);
+        ctx.drawImage(firstImg, 0 + m, 0 + m, w, h);
 
 
 
@@ -198,20 +199,26 @@ function App() {
 
           // Add Anime name
           if (!useCNName) {
-            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin, 2.04 * h + textMargin, textSize, '#000000')
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000')
           } else {
-            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime_cn, textMargin, 2.04 * h + textMargin, textSize, '#000000')
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime_cn, textMargin + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000')
           }
           if (posInfo.ep > 0) {
-            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
+            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000')
           } else if (posInfo.ep == 0 && posInfo.s > 0) {
-            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15, 2.1 * h + textMargin, textSize, '#000000')
+            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000')
           }
-          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3, 2.04 * h + textMargin, textSize, '#000000');
+          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3 + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000');
           if (posInfo.x && posInfo.y)
-            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7, 2.1 * h + textMargin, textSize, '#000000');
+            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000');
 
         }
+        // add stroke
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2 * m;
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+
         // set merged image url
         setMergedImageURL(canvas.toDataURL('image/png'));
       };
