@@ -201,7 +201,7 @@ function App() {
         if (needText) {
           // set footer bgc
           ctx.fillStyle = '#FFFFFF';
-          ctx.fillRect(0, 2 * h, canvas.width, 0.15 * h);
+          ctx.fillRect(0, 2 * h + 2 * m, canvas.width, 0.15 * h);
 
 
           // Add Anime name
