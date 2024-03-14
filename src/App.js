@@ -174,7 +174,7 @@ function App() {
 
         canvas.width = w + 2 * m;
         if (needText) {
-          canvas.height = 2.15 * h + m;
+          canvas.height = 2.15 * h + 3 * m;
         } else {
           canvas.height = 2 * h + 3 * m;
         }
@@ -197,6 +197,10 @@ function App() {
         ctx.lineWidth = 2 * m;
         ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
+        // add central bar
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, h + m, canvas.width, m);
+
 
         if (needText) {
           // set footer bgc
@@ -206,18 +210,18 @@ function App() {
 
           // Add Anime name
           if (!useCNName) {
-            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000')
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime, textMargin + m, 2.04 * h + textMargin + 2.5 * m, textSize, '#000000')
           } else {
-            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime_cn, textMargin + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000')
+            addTextToCanvasL(canvas, "🎞️ " + posInfo.anime_cn, textMargin + m, 2.04 * h + textMargin + 2.5 * m, textSize, '#000000')
           }
           if (posInfo.ep > 0) {
-            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000')
+            addTextToCanvasL(canvas, "⏱️ EP" + posInfo.ep.toString().padStart(2, '0') + " " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 2.5 * m, textSize, '#000000')
           } else if (posInfo.ep == 0 && posInfo.s > 0) {
-            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000')
+            addTextToCanvasL(canvas, "⏱️ " + s2ms(posInfo.s), textMargin * 1.15 + m, 2.1 * h + textMargin + 2.5 * m, textSize, '#000000')
           }
-          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3 + m, 2.04 * h + textMargin + 0.5 * m, textSize, '#000000');
+          addTextToCanvasR(canvas, posInfo.name + " 📍", w - textMargin * 1.3 + m, 2.04 * h + textMargin + 2.5 * m, textSize, '#000000');
           if (posInfo.x && posInfo.y)
-            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7 + m, 2.1 * h + textMargin + 0.5 * m, textSize, '#000000');
+            addTextToCanvasR(canvas, posInfo.x.toString() + "," + posInfo.y.toString() + " 🧭", w - textMargin * 0.7 + m, 2.1 * h + textMargin + 2.5 * m, textSize, '#000000');
 
         }
 
