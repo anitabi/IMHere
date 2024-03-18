@@ -376,7 +376,7 @@ function App() {
                   </div>
                   <div className="col-6 col-md-6">
                     <div className="row">
-                      <label>时间: </label>
+                      <label>时间</label>
                       <div className="col -6">
                         <input
                           type="number"
