@@ -536,13 +536,19 @@ function App() {
           </div>
 
           <ul class="nav col-3 justify-content-end list-unstyled d-flex">
+
             <li class="ms-3">
+              <a className="text-muted" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans">
+                <i class="bi bi-cc-circle-fill"></i>
+              </a>
+            </li>
+
+            <li class="ms-1">
               <a className="text-muted" target="_blank" href="https://github.com/anitabi/IMHere">
                 <i class="bi bi-github"></i>
               </a>
-
-
             </li>
+
           </ul>
         </footer>
 
